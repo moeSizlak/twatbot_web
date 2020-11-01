@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<link rel="shortcut icon" href="<%= @approot %>favicon.ico?t=<%= Time.now.to_i %>" />
+		<title>#newzbin URL's</title>
+
+		<link rel="stylesheet" type="text/css" href="<%= @approot %>css/menu.css" />
+		<link rel="stylesheet" type="text/css" href="<%= @approot %>css/standard.css" />
+		<link rel="stylesheet" type="text/css" href="<%= @approot %>js/jquery-ui-1.10.3/themes/base/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="<%= @approot %>css/simplePagination.css" />
+
+		<script type="text/javascript" src="<%= @approot %>js/jquery.min.js"></script>
+		<script type="text/javascript" src="<%= @approot %>js/jquery.simplePagination.js"></script>
+		<script type="text/javascript" src="<%= @approot %>js/jquery-ui-1.10.3/ui/jquery-ui.js"></script>
+
+
+	</head>
+	<body>
+		<div id="page-top">
+			<table>
+				<tr>
+					<td>
+						<img style="float:left;" src="<%= @approot %>images/newzbin_50.png"  alt="#newzbin URL Database"/>
+					</td>
+					<td>
+						<span style="white-space:pre;font-size:20px;">     #newzbin URL Database</span>
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<div id="page-top-menu">
+			<div class="nav-menu">
+				<ul class="nav">
+					<li class="top">
+						<a href="<%= @approot %>urls" id="URL_menubutton" class="top">URL's</a>
+					</li>
+					<li class="top">
+						<a href="#" id="OTHER_menubutton" class="top">Other Shit</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div id="main-container">
+<!--  -->
+			<%== yield %>
+<!--  -->		
+		</div>
+	</body>
+</html>

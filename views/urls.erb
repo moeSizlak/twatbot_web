@@ -1,0 +1,266 @@
+<form id="url_search_form" method="get" action="urls">
+	<table>
+		<tr>
+			<td>
+				<div> 					
+					<fieldset>	
+						<input type="hidden" name="page" id="page" value=""/>			
+						<legend style="color:#5f8dd3;font-weight:bold;">Search</legend>
+						<table style="text-align: left;">
+							<tr>
+								<td>
+							Start Date:
+								</td>
+								<td>
+							End Date:
+								</td>
+								<td>
+							Nick:
+								</td>
+								<td>
+							URL:
+								</td>
+								<td>
+							Title:
+								</td>
+								<td>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<input type="text" id="startDate" name="startDate" value="<%= @params["startDate"].to_s %>"/>
+								</td>
+								<td>
+									<input type="text" id="endDate" name="endDate" value="<%= @params["endDate"].to_s %>"/>
+								</td>
+								<td>
+									<input type="text" id="nick" name="nick" value="<%= @params["nick"].to_s %>"/>
+								</td>
+								<td>
+									<input type="text" id="url" name="url" value="<%= @params["url"].to_s %>"/>
+								</td>
+								<td>
+									<input type="text" id="title" name="title" value="<%= @params["title"].to_s %>"/>
+								</td>
+								<td>
+									<input type="submit" id="SUBMIT_url_search" value="Search"/>
+								</td>
+							</tr>
+						</table>
+					</fieldset>				
+				</div>
+			</td>
+			<td>
+				<div> 
+					<fieldset>
+						<legend style="color:#5f8dd3;font-weight:bold;">Display</legend>
+						<table style="text-align: left;">
+							<tr>
+								<td>Images</td>
+								<td>
+									<input type="checkbox" name="showImg" id="showImg" <%== (@query_string.to_s.length == 0 ||  @params["showImg"].to_s.length > 0) ? 'checked="checked"' : '' %>/>
+								</td>
+							</tr>
+							<tr>
+								<td>Youtube</td>
+								<td>
+									<input type="checkbox" name="showVid" id="showVid" <%== (@query_string.to_s.length == 0 ||  @params["showVid"].to_s.length > 0) ? 'checked="checked"' : '' %>/>
+								</td>
+							</tr>
+						</table>
+					</fieldset>
+				</div>
+			</td>
+		</tr>
+	</table>
+</form>
+
+<div id="PCR_data" <%== 'style="display:none"' if @result_count == -1 %>>
+	<hr/>
+	<% if @result_count > -1 %>
+		<div id="pagetop-left" style="float: left;">
+			<span style="font-size:170%;font-weight:bold"><%= @result_count %> Results  [Page <%= @mypage %> of <%= @maxpage %>]</span>
+			<br/>
+			<br/>
+			<div class="pager" ></div>
+			<br/>
+		</div>
+
+		<table class = "PCRtable" id="PCRtable1">
+			<tr class="even">
+				<th class="center" style="width:10%">Date</th>
+				<th class="center" style="width:10%">Nick</th>
+				<th class="center" style="width:30%">URL</th>
+				<th class="center" style="width:50%">Title</th>
+			</tr>
+			<% @urls.each_with_index do |url, i| %>
+				<% 
+					myClass = i % 2 == 0 ? 'odd' : 'even'
+				%>
+				<tr class="<%= myClass %>">
+					<td><%= url[:Date].strftime('%Y-%m-%d %H:%M') rescue '' %></td>
+					<td style="font-size:120%;font-weight:bold;color:red;"><%= url[:Nick].to_s %></td>
+					<td class="wrap">
+						<a class="axyt" id="axyt<%= i.to_s %>" target="_blank" href="<%== url[:URL].to_s %>" title="<%= url[:URL].to_s %>">
+						<%= url[:URL].to_s.gsub(/^https?:\/\/(?:www\.)?([^\/]*).*$/, '\1') %> /...</a>
+						<% if url[:ImageFile].to_s.length > 0 %>
+							<a class="bxyt" style="display:none;" id="bxyt<%= i.to_s %>" target="_blank" href="<%= @approot %><%= @image_path %><%== url[:ImageFile].to_s %>" />
+						<% end %>
+					</td>
+					<td>
+						<table class="simptab">
+							<tr>
+								<td class="xyt" id="xyt<%= i.to_s %>">
+								</td>
+								<td style="font-size:120%;">
+									<%= url[:Title].to_s.length > 0 ? url[:Title].to_s : url[:URL].to_s %>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			<% end %>
+		</table>
+		<br/>
+		<div class="pager" style="text-align:center;margin-left:auto;margin-right:auto;"></div>
+	<% end %>
+</div>
+
+
+
+
+<script type="text/javascript">
+	
+
+	function checkImage(cellid) 
+	{
+		
+		if(!cellid || !cellid.match(/^[a-zA-Z]+\d+$/) )
+		{
+			return;
+		}
+	
+
+		var url = $('#b'+cellid).attr('href');
+		if(!url)
+		{
+			url = $('#a'+cellid).attr('href');
+		}
+
+		var $img = $('<img height="250" src="'+url+'" />').on('load', function(){$('#'+cellid).prepend($(this).wrap('<a target="_blank" href="'+url+'"></a>').parent())} );
+	
+		if(url && url.match(/WEBM|GIFV|MP4/i))
+		{
+			var $vid = $('<video controls name="media"><source src="'+url+'"  /></video>').on('loadeddata', function(){$('#'+cellid).prepend($(this))} );
+		}   
+	}
+
+	function checkYoutubeExists(cellid)
+	{
+		var url = $('#a'+cellid).attr('href');
+		var vid = getYoutubeID(url);		
+
+		if(!vid)
+		{		
+			return;
+		}
+
+		var strReturn = null;		
+		
+		jQuery.ajax({
+			//url: "https://www.googleapis.com/youtube/v3/videos?id=" + vid + "&key=ZZZZ&part=status",
+			url: "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=" + vid + "&format=json",
+			dataType: "json",
+			complete: function(data) {
+				//if(data && data.items && data.items.length && data.items.length >0)
+				//if(1==1) //xhr.status == 200)
+				//{
+					$('#'+cellid).prepend('<iframe height="250" src="https://www.youtube.com/embed/' + vid + '" frameborder="0" allowfullscreen/><br/>');
+				//}
+			},
+		});
+		
+	}
+
+
+	function getYoutubeID(url)
+	{
+		if(url)
+		{
+			var matches = url.match(/.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|watch\?(?:(?!v=)[^&]+&)+v=)([^#\&\?\s]*).*/)
+			
+			if(matches)
+			{
+				return matches[1];
+			}
+			else
+			{
+				return null;
+			}
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	function render_img_vid()
+	{
+		$(".xyt").each( function(index, element){ $(this).html(''); } );
+
+		if($('#showImg').is(":checked"))
+		{
+			$(".xyt").each( function(index, element){ checkImage( $(this).attr('id')) } );
+		}
+
+		if($('#showVid').is(":checked"))
+		{
+			$(".xyt").each( function(index, element){ checkYoutubeExists( $(this).attr('id')) } );
+		}
+	}
+ 
+
+
+	$(function() {
+
+		$( "#startDate" ).datepicker({ dateFormat: "yy-mm-dd"});
+		$( "#endDate" ).datepicker({ dateFormat: "yy-mm-dd"});
+
+
+		$("#url_search_form").submit(function(event) {
+			$('#url_search_form').find('input').filter(function() { return !this.value; }).attr('disabled', 'disabled');
+		});
+
+		//if(<%= @mypage %> != 1) { $('#PCR_data').goTo(); }
+
+		$('.pager').pagination({
+		pages: <%= @maxpage || '1' %>,
+		currentPage: <%= @mypage || '1' %>,
+		cssStyle: 'light-theme',
+		hrefTextPrefix: '#',
+		hrefTextSuffix: '',
+		selectOnClick: false,
+		onPageClick: function (pageNumber) { $("#url_search_form #page").val(pageNumber); $("#url_search_form").submit(); }
+		});		
+
+		$( document ).tooltip({show:false, tooltipClass:'tooltip'});
+
+		$("form input").keypress(function (e) {
+	        if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+	            $("#url_search_form").submit();
+	            return false;
+	        } else {
+	            return true;
+	        }
+	    });
+
+	    $('#url_search_form :checkbox').click(function() {
+			 render_img_vid();
+		});
+
+
+	    //$(".xyt").each( function(index, element){ checkImage( $(this).attr('id')) } );
+	    render_img_vid();
+
+	});
+</script>

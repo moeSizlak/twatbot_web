@@ -1,0 +1,218 @@
+/* main menu styles */
+
+.nav-menu {
+	margin: 0;
+    padding: 0 3px;
+    height: 30px;
+    min-width: 1000px;
+    background-image: url("images/nav.jpg");
+    border-top: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+}
+
+.nav,.nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-family: Tahoma,Arial,Helvetica,sans-serif;
+    z-index: 100;
+}
+
+.nav ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-family: Tahoma,Arial,Helvetica,sans-serif;
+    z-index: 200;
+}
+
+.nav {
+    position: relative;
+}
+
+.nav ul {
+    height: 0;
+    left: 0;
+    /*overflow: hidden;*/
+    position: absolute;
+    top: 50px;
+}
+
+.subs {
+	display: none;
+}
+
+.subs-right1 {
+	display: none;
+    z-index: 200;
+}
+
+.subs-right1 ol {
+    height: 0;
+    left: -152px;
+    overflow: hidden;
+    position: absolute;
+    top: 0px;
+}
+
+.subs-right1 ol li {
+    border-bottom: 0;
+}
+
+.subs ol li {
+    border-bottom: 0;
+}
+
+.subs ol {
+    height: 0;
+    left: 180px;
+    overflow: hidden;
+    position: absolute;
+    top: 0px;
+    z-index: 200;
+}
+
+.nav li {
+    float: left;
+    position: relative;
+}
+
+.nav li a {
+    -moz-transition: 0.5s;
+    -o-transition: 0.5s;
+    -webkit-transition: 0.5s;
+    border-top: 3px solid #eee;
+    color: #444;
+    display: block;
+    font-size: 12px;
+    line-height: 24px;
+    padding: 0px 10px 3px 10px;
+    text-decoration: none;
+    transition: 0.5s;
+}
+
+.nav li a.top {
+    background-color: #ddd;
+    background-image: url("images/nav.jpg");
+}
+
+.nav li a img {
+    margin: 3px 0 -3px 0;
+    border: 0;
+}
+
+.nav li:hover > a {
+    background-color: #eee;
+    border-color: #084;
+    color: #084;
+}
+
+.nav li:hover ul.subs {
+    height: auto;
+    width: 180px;
+    box-shadow: 4px 4px 4px 0px #aaa;
+	-webkit-box-shadow: 4px 4px 4px 0px #aaa;
+	-moz-box-shadow: 4px 4px 4px 0px #aaa;
+	z-index: 500;
+	background: #eee;
+	border: 1px solid #cccccc;
+	display: block;
+}
+
+.nav li:hover ul.subs li:hover ol {
+    height: auto;
+    width: 150px;
+    box-shadow: 4px 4px 4px 0px #aaa;
+	-webkit-box-shadow: 4px 4px 4px 0px #aaa;
+	-moz-box-shadow: 4px 4px 4px 0px #aaa;
+	z-index: 510;
+	background: #eee;
+	border: 1px solid #cccccc;
+}
+
+.nav li:hover ul.subs-right1 li:hover ol {
+    height: auto;
+    width: 150px;
+    box-shadow: 4px 4px 4px 0px #aaa;
+	-webkit-box-shadow: 4px 4px 4px 0px #aaa;
+	-moz-box-shadow: 4px 4px 4px 0px #aaa;
+	z-index: 510;
+	background: #eee;
+	border: 1px solid #cccccc;
+}
+
+.nav li:hover ul.subs a {
+    line-height: 18px;
+}
+
+.nav li:hover ul.subs-right1 a {
+    line-height: 18px;
+}
+
+.nav li:hover ul.subs-right1 {
+    height: auto;
+    width: 180px;
+    margin-left: -144px;
+    box-shadow: 4px 4px 4px 0px #aaa;
+	-webkit-box-shadow: 4px 4px 4px 0px #aaa;
+	-moz-box-shadow: 4px 4px 4px 0px #aaa;
+	z-index: 500;
+	border: 1px solid #cccccc;
+	display: block;
+}
+
+.nav li:hover ul.subs-right2 {
+    height: auto;
+    width: 180px;
+    margin-left: -58px;
+    box-shadow: 4px 4px 4px 0px #aaa;
+	-webkit-box-shadow: 4px 4px 4px 0px #aaa;
+	-moz-box-shadow: 4px 4px 4px 0px #aaa;
+	border: 1px solid #cccccc;
+}
+
+.nav ul li {
+    -moz-transition: 0.5s;
+    -o-transition: 0.5s;
+    -webkit-transition: 0.5s;
+    opacity: 0;
+    transition: 0.5s;
+    width: 100%;
+}
+
+.nav li ul li {
+    -moz-transition-delay: 0s;
+    -o-transition-delay: 0s;
+    -webkit-transition-delay: 0s;
+    transition-delay: 0s;
+}
+
+.nav li:hover ul li {
+    opacity: 1;
+    -moz-transition-delay: 0.5s;
+    -o-transition-delay: 0.5s;
+    -webkit-transition-delay: 0.5s;
+    transition-delay: 0.5s;
+}
+
+.nav ul li a {
+    background-color: #e4e4e4;
+    border: 0;
+    color: #444;
+    line-height: 1px;
+    -moz-transition: 0.5s;
+    -o-transition: 0.5s;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+}
+
+.nav li:hover ul li a {
+    line-height: 25px;
+}
+
+.nav ul li a:hover {
+ 	color: white;
+    background: #084;
+    
+    background-image: url("images/hover.jpg");
+}
